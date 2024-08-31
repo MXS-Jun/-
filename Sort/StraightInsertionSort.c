@@ -75,20 +75,16 @@ void straightInsertionSort(SqList *sl, int type) // if type = 0 : ascend; if typ
         for (int i = 2; i <= sl->length; i++)
         {
             (sl->r)[0] = (sl->r)[i];
-            for (int i = 2; i <= sl->length; i++)
+            for (int j = 1; j < i; j++)
             {
-                (sl->r)[0] = (sl->r)[i];
-                for (int j = 1; j < i; j++)
+                if ((sl->r)[0] >= (sl->r)[j])
                 {
-                    if ((sl->r)[0] >= (sl->r)[j])
+                    for (int k = i; k > j; k--)
                     {
-                        for (int k = i; k > j; k--)
-                        {
-                            (sl->r)[k] = (sl->r)[k - 1];
-                        }
-                        (sl->r)[j] = (sl->r)[0];
-                        break;
+                        (sl->r)[k] = (sl->r)[k - 1];
                     }
+                    (sl->r)[j] = (sl->r)[0];
+                    break;
                 }
             }
         }
