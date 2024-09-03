@@ -4,28 +4,28 @@
 
 typedef struct
 {
-    int r[MAXSIZE + 1];
+    int record[MAXSIZE + 1];
     int length;
-} SqList;
+} SeqList;
 
-void initList(SqList *sl);
-void shellSort(SqList *sl, int type);
-void printList(SqList *sl);
-void clearList(SqList *sl);
+void InitList(SeqList *list);
+void ShellSort(SeqList *list, int type);
+void PrintList(SeqList *list);
+void ClearList(SeqList *list);
 
 int main(void)
 {
-    SqList list;
+    SeqList list;
     int value;
-    initList(&list);
+    InitList(&list);
 
     while (1)
     {
         int n = 1;
-        printf("Enter the SqList (less than 100 integers separated by blank) : ");
+        printf("Enter the SeqList (less than 100 integers separated by blank) : ");
         while (scanf("%d", &value) == 1 && n < MAXSIZE)
         {
-            (list.r)[n++] = value;
+            (list.record)[n++] = value;
             list.length++;
             if (getchar() == '\n')
             {
@@ -36,22 +36,22 @@ int main(void)
         printf("Enter the type (ascend:0, descend:1) :");
         scanf("%d", &type);
 
-        shellSort(&list, type);
-        printList(&list);
-        clearList(&list);
+        ShellSort(&list, type);
+        PrintList(&list);
+        ClearList(&list);
     }
 
     return 0;
 }
 
-void initList(SqList *sl)
+void InitList(SeqList *list)
 {
-    sl->length = 0;
+    list->length = 0;
 }
 
-void shellSort(SqList *sl, int type) // if type = 0 : ascend; if type = 1: descend;
+void ShellSort(SeqList *list, int type) // if type = 0 : ascend; if type = 1: descend;
 {
-    int increment = sl->length;
+    int increment = list->length;
     if (type == 0)
     {
         do
@@ -60,20 +60,20 @@ void shellSort(SqList *sl, int type) // if type = 0 : ascend; if type = 1: desce
 
             for (int i = 1; i <= increment; i++)
             {
-                if (i + increment <= sl->length)
+                if (i + increment <= list->length)
                 {
-                    for (int j = i + increment; j <= sl->length; j += increment)
+                    for (int j = i + increment; j <= list->length; j += increment)
                     {
-                        (sl->r)[0] = (sl->r)[j];
+                        (list->record)[0] = (list->record)[j];
                         for (int k = i; k < j; k += increment)
                         {
-                            if ((sl->r)[k] > (sl->r)[0])
+                            if ((list->record)[k] > (list->record)[0])
                             {
                                 for (int h = j; h > k; h -= increment)
                                 {
-                                    (sl->r)[h] = (sl->r)[h - increment];
+                                    (list->record)[h] = (list->record)[h - increment];
                                 }
-                                (sl->r)[k] = (sl->r)[0];
+                                (list->record)[k] = (list->record)[0];
                                 break;
                             }
                         }
@@ -90,20 +90,20 @@ void shellSort(SqList *sl, int type) // if type = 0 : ascend; if type = 1: desce
 
             for (int i = 1; i <= increment; i++)
             {
-                if (i + increment <= sl->length)
+                if (i + increment <= list->length)
                 {
-                    for (int j = i + increment; j <= sl->length; j += increment)
+                    for (int j = i + increment; j <= list->length; j += increment)
                     {
-                        (sl->r)[0] = (sl->r)[j];
+                        (list->record)[0] = (list->record)[j];
                         for (int k = i; k < j; k += increment)
                         {
-                            if ((sl->r)[k] < (sl->r)[0])
+                            if ((list->record)[k] < (list->record)[0])
                             {
                                 for (int h = j; h > k; h -= increment)
                                 {
-                                    (sl->r)[h] = (sl->r)[h - increment];
+                                    (list->record)[h] = (list->record)[h - increment];
                                 }
-                                (sl->r)[k] = (sl->r)[0];
+                                (list->record)[k] = (list->record)[0];
                                 break;
                             }
                         }
@@ -118,16 +118,16 @@ void shellSort(SqList *sl, int type) // if type = 0 : ascend; if type = 1: desce
     }
 }
 
-void printList(SqList *sl)
+void PrintList(SeqList *list)
 {
-    for (int i = 1; i <= sl->length; i++)
+    for (int i = 1; i <= list->length; i++)
     {
-        printf("%d ", (sl->r)[i]);
+        printf("%d ", (list->record)[i]);
     }
     printf("\n");
 }
 
-void clearList(SqList *sl)
+void ClearList(SeqList *list)
 {
-    sl->length = 0;
+    list->length = 0;
 }
