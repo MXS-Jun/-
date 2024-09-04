@@ -1,4 +1,4 @@
-这段代码实现了一个基于Shell排序的顺序表排序程序。Shell排序是一种改进的插入排序，通过将待排序序列分割成若干子序列，然后对每个子序列进行插入排序，最后合并成一个有序序列。下面是对代码的详细解释：
+这段代码实现了一个基于Shell排序算法的顺序表排序程序。Shell排序是一种改进的插入排序算法，通过比较相距一定间隔的元素来减少数据移动的次数，从而提高排序效率。下面是对代码的详细解释：
 
 ### 数据结构定义
 
@@ -29,11 +29,77 @@ void InitList(SeqList *list)
 
 ```c
 void ShellSort(SeqList *list, int type)
+{
+    int increment = list->length;
+    if (type == 0)
+    {
+        do
+        {
+            increment = increment / 3 + 1;
+            for (int i = 1; i <= increment; i++)
+            {
+                if (i + increment <= list->length)
+                {
+                    for (int j = i + increment; j <= list->length; j += increment)
+                    {
+                        (list->record)[0] = (list->record)[j];
+                        for (int k = i; k < j; k += increment)
+                        {
+                            if ((list->record)[k] > (list->record)[0])
+                            {
+                                for (int h = j; h > k; h -= increment)
+                                {
+                                    (list->record)[h] = (list->record)[h - increment];
+                                }
+                                (list->record)[k] = (list->record)[0];
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        } while (increment > 1);
+    }
+    else if (type == 1)
+    {
+        do
+        {
+            increment = increment / 3 + 1;
+            for (int i = 1; i <= increment; i++)
+            {
+                if (i + increment <= list->length)
+                {
+                    for (int j = i + increment; j <= list->length; j += increment)
+                    {
+                        (list->record)[0] = (list->record)[j];
+                        for (int k = i; k < j; k += increment)
+                        {
+                            if ((list->record)[k] < (list->record)[0])
+                            {
+                                for (int h = j; h > k; h -= increment)
+                                {
+                                    (list->record)[h] = (list->record)[h - increment];
+                                }
+                                (list->record)[k] = (list->record)[0];
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        } while (increment > 1);
+    }
+    else
+    {
+        printf("TYPE ERROR: Type can only be 0 or 1.\n");
+        exit(1);
+    }
+}
 ```
 
-- `ShellSort` 函数实现了Shell排序算法。
-- `type` 参数用于指定排序方式，0表示升序，1表示降序。
-- 算法通过不断缩小增量（`increment`），对每个子序列进行插入排序，最后合并成一个有序序列。
+- `ShellSort` 函数实现了Shell排序算法。根据 `type` 参数，决定是升序排序还是降序排序。
+- `increment` 变量用于控制排序的间隔，初始值为顺序表的长度，每次循环减少为原来的一半加1，直到间隔为1。
+- 内部嵌套的循环用于实现间隔插入排序。
 
 #### 打印顺序表
 
@@ -97,15 +163,12 @@ int main(void)
 ```
 
 - 主函数中，首先初始化顺序表。
-- 然后进入一个无限循环，每次循环中：
-  - 提示用户输入一组整数，直到输入的整数个数达到最大值100或用户按下回车键。
-  - 提示用户选择排序方式（升序或降序）。
-  - 调用 `ShellSort` 函数进行排序。
-  - 调用 `PrintList` 函数打印排序后的顺序表。
-  - 调用 `ClearList` 函数清空顺序表，以便下一次输入。
+- 进入一个无限循环，提示用户输入顺序表元素，直到输入的元素数量达到最大值100。
+- 提示用户输入排序类型（升序或降序）。
+- 调用 `ShellSort` 函数进行排序，然后调用 `PrintList` 函数打印排序后的顺序表，最后调用 `ClearList` 函数清空顺序表，以便进行下一次排序。
 
 ### 注意事项
 
 - 代码中使用了 `MAXSIZE` 宏定义来限制顺序表的最大长度为100。
-- 在 `ShellSort` 函数中，使用了 `record[0]` 作为临时存储位置，这可能会在排序过程中覆盖顺序表中的数据。在实际应用中，应该避免使用 `record[0]`。
-- 代码中没有对用户输入进行错误处理，例如输入非整数的情况。在实际应用中，应该添加相应的错误处理机制。
+- 在 `ShellSort` 函数中，使用了 `record[0]` 作为临时存储位置，这可能会在处理负数时引发问题。
+- 代码中没有对输入进行错误处理，例如输入非整数的情况。

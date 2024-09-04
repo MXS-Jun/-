@@ -10,7 +10,7 @@ typedef struct
 } SeqList;
 ```
 
-定义了一个顺序表结构 `SeqList`，其中 `record` 是一个数组，用于存储数据，`length` 表示当前顺序表的长度。
+- `SeqList` 结构体定义了一个顺序表，其中 `record` 是一个数组，用于存储数据，`length` 表示当前顺序表的长度。
 
 ### 初始化顺序表
 
@@ -21,7 +21,7 @@ void InitList(SeqList *list)
 }
 ```
 
-初始化顺序表，将长度设置为0。
+- `InitList` 函数用于初始化顺序表，将长度设置为0。
 
 ### 归并排序相关函数
 
@@ -31,7 +31,9 @@ void InitList(SeqList *list)
 void Merge(SeqList *list, int start, int mid, int end, int type)
 ```
 
-该函数用于将两个有序子序列合并成一个有序序列。`start` 和 `mid` 是左子序列的起始和结束位置，`end` 是右子序列的结束位置，`type` 决定排序顺序（升序或降序）。
+- `Merge` 函数用于将两个有序子序列合并成一个有序序列。
+- `start`、`mid`、`end` 分别表示两个子序列的起始和结束位置。
+- `type` 表示排序类型，0表示升序，1表示降序。
 
 #### 分割函数
 
@@ -39,7 +41,8 @@ void Merge(SeqList *list, int start, int mid, int end, int type)
 void Divide(SeqList *list, int start, int end, int type)
 ```
 
-该函数用于递归地将顺序表分割成更小的子序列，直到每个子序列只有一个元素。然后调用 `Merge` 函数进行合并。
+- `Divide` 函数用于递归地将顺序表分割成更小的子序列，直到每个子序列只有一个元素。
+- `start` 和 `end` 分别表示当前子序列的起始和结束位置。
 
 #### 归并排序主函数
 
@@ -47,7 +50,7 @@ void Divide(SeqList *list, int start, int end, int type)
 void MergeSort(SeqList *list, int type)
 ```
 
-根据 `type` 的值（0表示升序，1表示降序），调用 `Divide` 函数进行归并排序。
+- `MergeSort` 函数是归并排序的主函数，根据 `type` 的值决定是升序还是降序排序。
 
 ### 辅助函数
 
@@ -57,7 +60,7 @@ void MergeSort(SeqList *list, int type)
 void PrintList(SeqList *list)
 ```
 
-打印顺序表中的所有元素。
+- `PrintList` 函数用于打印顺序表中的所有元素。
 
 #### 清空顺序表
 
@@ -65,7 +68,7 @@ void PrintList(SeqList *list)
 void ClearList(SeqList *list)
 ```
 
-将顺序表的长度重置为0，清空顺序表。
+- `ClearList` 函数用于清空顺序表，将长度设置为0。
 
 ### 主函数
 
@@ -102,16 +105,12 @@ int main(void)
 }
 ```
 
-主函数中，首先初始化顺序表，然后进入一个无限循环，每次循环中：
-
-1. 读取用户输入的整数序列，直到输入的整数个数达到最大值100或用户按下回车键。
-2. 读取排序类型（升序或降序）。
-3. 调用 `MergeSort` 函数进行排序。
-4. 调用 `PrintList` 函数打印排序后的顺序表。
-5. 调用 `ClearList` 函数清空顺序表，准备下一次输入。
+- 主函数中，首先初始化顺序表，然后进入一个无限循环。
+- 在循环中，用户可以输入一组整数，并选择排序类型（升序或降序）。
+- 调用 `MergeSort` 函数进行排序，然后调用 `PrintList` 函数打印排序后的顺序表，最后调用 `ClearList` 函数清空顺序表，以便进行下一次输入和排序。
 
 ### 注意事项
 
-1. 代码中使用了宏定义 `MAXSIZE` 来限制顺序表的最大长度为100。
-2. 在读取用户输入时，使用了 `getchar()` 来处理输入中的空格和换行符，确保正确读取整数。
-3. 在 `MergeSort` 函数中，如果 `type` 不是0或1，程序会输出错误信息并退出。
+- 代码中使用了宏定义 `MAXSIZE` 来限制顺序表的最大长度为100。
+- 在输入数据时，用户可以输入多个整数，直到输入的整数个数达到100或者用户按下回车键。
+- 代码中没有对输入的数据进行错误检查，例如输入非整数的情况。在实际应用中，可能需要添加相应的错误处理机制。

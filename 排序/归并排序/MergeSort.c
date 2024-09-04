@@ -146,7 +146,7 @@ void MergeSort(SeqList *list, int type) // if type = 0 : ascend; if type = 1: de
     else
     {
         printf("TYPE ERROR: Type can only be 0 or 1.\n");
-        exit(0);
+        exit(1);
     }
 }
 

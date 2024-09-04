@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #define MAXSIZE 100
 
@@ -88,6 +89,7 @@ void SimpleSelectionSort(SeqList *list, int type) // if type = 0 : ascend; if ty
     else
     {
         printf("TYPE ERROR: Type can only be 0 or 1.\n");
+        exit(1);
     }
 }
 
