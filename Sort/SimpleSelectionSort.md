@@ -1,72 +1,72 @@
-这段代码实现了一个简单的顺序表（SqList）及其排序功能。下面是对代码的详细解释：
+这段代码实现了一个简单的顺序表（SeqList）及其排序功能。下面是对代码的详细解释：
 
-### 数据结构定义
+### 1. 数据结构定义
 
 ```c
 typedef struct
 {
-    int r[MAXSIZE + 1];
+    int record[MAXSIZE + 1];
     int length;
-} SqList;
+} SeqList;
 ```
 
-- `SqList` 是一个结构体，包含一个整型数组 `r` 和一个整型变量 `length`。
-- `r` 数组用于存储顺序表的元素，`length` 表示顺序表的当前长度。
+- `SeqList` 是一个结构体，包含一个整型数组 `record` 和一个整型变量 `length`。
+- `record` 数组用于存储顺序表的元素，数组大小为 `MAXSIZE + 1`，其中 `MAXSIZE` 是定义的最大元素数量（100）。
+- `length` 记录当前顺序表中实际存储的元素数量。
 
-### 函数定义
+### 2. 函数定义
 
-#### `swap`
+#### 初始化顺序表
 
 ```c
-void swap(SqList *sl, int i, int j)
+void InitList(SeqList *list)
 {
-    int tmp = (sl->r)[i];
-    (sl->r)[i] = (sl->r)[j];
-    (sl->r)[j] = tmp;
+    list->length = 0;
 }
 ```
 
-- `swap` 函数用于交换顺序表中两个位置的元素。
-- 参数 `sl` 是指向顺序表的指针，`i` 和 `j` 是要交换的两个元素的位置。
+- `InitList` 函数用于初始化顺序表，将 `length` 设置为 0。
 
-#### `initList`
+#### 交换元素
 
 ```c
-void initList(SqList *sl)
+void Swap(SeqList *list, int i, int j)
 {
-    sl->length = 0;
+    int tmp = (list->record)[i];
+    (list->record)[i] = (list->record)[j];
+    (list->record)[j] = tmp;
 }
 ```
 
-- `initList` 函数用于初始化顺序表，将长度设置为 0。
+- `Swap` 函数用于交换顺序表中索引 `i` 和 `j` 处的元素。
 
-#### `simpleSelectionSort`
+#### 简单选择排序
 
 ```c
-void simpleSelectionSort(SqList *sl, int type)
+void SimpleSelectionSort(SeqList *list, int type)
 {
     if (type == 0)
     {
-        for (int i = 1; i < sl->length; i++)
+        for (int i = 1; i < list->length; i++)
         {
-            for (int j = i + 1; j <= sl->length; j++)
+            for (int j = i + 1; j <= list->length; j++)
             {
-                if ((sl->r)[i] > (sl->r)[j])
+                if ((list->record)[i] > (list->record)[j])
                 {
-                    swap(sl, i, j);
+                    Swap(list, i, j);
                 }
             }
         }
     }
     else if (type == 1)
     {
-        for (int i = 1; i < sl->length; i++)
+        for (int i = 1; i < list->length; i++)
         {
-            for (int j = i + 1; j <= sl->length; j++)
+            for (int j = i + 1; j <= list->length; j++)
             {
-                if ((sl->r)[i] < (sl->r)[j])
+                if ((list->record)[i] < (list->record)[j])
                 {
-                    swap(sl, i, j);
+                    Swap(list, i, j);
                 }
             }
         }
@@ -78,52 +78,52 @@ void simpleSelectionSort(SqList *sl, int type)
 }
 ```
 
-- `simpleSelectionSort` 函数实现了简单的选择排序算法。
-- 参数 `type` 用于指定排序方式，`0` 表示升序，`1` 表示降序。
-- 通过两层循环遍历数组，找到未排序部分的最小（或最大）元素，并交换到合适的位置。
+- `SimpleSelectionSort` 函数实现了简单选择排序算法。
+- 根据传入的 `type` 参数，决定是升序（`type == 0`）还是降序（`type == 1`）排序。
+- 如果 `type` 不是 0 或 1，则输出错误信息。
 
-#### `printList`
+#### 打印顺序表
 
 ```c
-void printList(SqList *sl)
+void PrintList(SeqList *list)
 {
-    for (int i = 1; i <= sl->length; i++)
+    for (int i = 1; i <= list->length; i++)
     {
-        printf("%d ", (sl->r)[i]);
+        printf("%d ", (list->record)[i]);
     }
     printf("\n");
 }
 ```
 
-- `printList` 函数用于打印顺序表中的所有元素。
+- `PrintList` 函数用于打印顺序表中的所有元素。
 
-#### `clearList`
+#### 清空顺序表
 
 ```c
-void clearList(SqList *sl)
+void ClearList(SeqList *list)
 {
-    sl->length = 0;
+    list->length = 0;
 }
 ```
 
-- `clearList` 函数用于清空顺序表，将长度设置为 0。
+- `ClearList` 函数用于清空顺序表，将 `length` 设置为 0。
 
-### 主函数
+### 3. 主函数
 
 ```c
 int main(void)
 {
-    SqList list;
-    initList(&list);
+    SeqList list;
+    InitList(&list);
     int value;
 
     while (1)
     {
         int n = 1;
-        printf("Enter the SqList (less than 100 integers separated by blank) : ");
+        printf("Enter the SeqList (less than 100 integers separated by blank) : ");
         while (scanf("%d", &value) == 1 && n < MAXSIZE)
         {
-            (list.r)[n++] = value;
+            (list.record)[n++] = value;
             list.length++;
             if (getchar() == '\n')
             {
@@ -134,9 +134,9 @@ int main(void)
         printf("Enter the type (ascend:0, descend:1) :");
         scanf("%d", &type);
 
-        simpleSelectionSort(&list, type);
-        printList(&list);
-        clearList(&list);
+        SimpleSelectionSort(&list, type);
+        PrintList(&list);
+        ClearList(&list);
     }
 
     return 0;
@@ -145,13 +145,13 @@ int main(void)
 
 - 主函数中，首先初始化一个顺序表 `list`。
 - 使用一个无限循环，允许用户多次输入顺序表并进行排序。
-- 用户输入顺序表时，最多输入 99 个整数，以空格分隔。
-- 用户选择排序方式（升序或降序）。
-- 调用 `simpleSelectionSort` 函数进行排序，然后调用 `printList` 函数打印排序后的顺序表。
-- 最后调用 `clearList` 函数清空顺序表，准备下一次输入。
+- 用户输入顺序表时，最多输入 100 个整数，以空格分隔。
+- 用户输入排序类型（升序或降序）。
+- 调用 `SimpleSelectionSort` 函数进行排序，然后调用 `PrintList` 函数打印排序后的顺序表。
+- 最后调用 `ClearList` 函数清空顺序表，以便下一次输入。
 
 ### 注意事项
 
-- 代码中使用了宏定义 `MAXSIZE` 来限制顺序表的最大长度为 100。
-- 用户输入时，最多只能输入 99 个整数，因为数组索引从 1 开始。
-- 代码中没有对输入进行错误处理，例如输入非整数的情况。在实际应用中，可能需要添加相应的错误处理机制。
+- 代码中使用了 `MAXSIZE` 作为顺序表的最大容量，确保用户输入的元素数量不超过这个限制。
+- 在输入顺序表时，如果用户输入的元素数量超过 100，程序不会报错，但只会处理前 100 个元素。
+- 代码中没有对输入的合法性进行严格检查，例如输入非整数的情况。在实际应用中，可能需要添加相应的错误处理机制。

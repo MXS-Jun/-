@@ -1,44 +1,82 @@
-这段代码实现了一个基于直接插入排序的顺序表排序程序。下面是对代码的详细解释：
+这段代码实现了一个顺序表（SeqList）的初始化、插入排序、打印和清空功能。以下是代码的详细解释：
 
 ### 数据结构定义
 ```c
 typedef struct
 {
-    int r[MAXSIZE + 1];
+    int record[MAXSIZE + 1];
     int length;
-} SqList;
+} SeqList;
 ```
-这里定义了一个结构体 `SqList`，其中包含一个数组 `r` 用于存储数据，`length` 表示当前顺序表的长度。数组 `r` 的索引从 1 开始，0 位置用作哨兵位。
+定义了一个顺序表结构体，其中`record`是一个数组，用于存储数据，`length`表示当前顺序表的长度。
 
 ### 函数定义
 1. **初始化顺序表**
 ```c
-void initList(SqList *sl)
+void InitList(SeqList *list)
 {
-    sl->length = 0;
+    list->length = 0;
 }
 ```
-初始化顺序表，将长度设置为 0。
+初始化顺序表，将长度设置为0。
 
 2. **直接插入排序**
 ```c
-void straightInsertionSort(SqList *sl, int type)
+void StraightInsertionSort(SeqList *list, int type)
+{
+    if (type == 0)
+    {
+        for (int i = 2; i <= list->length; i++)
+        {
+            (list->record)[0] = (list->record)[i];
+            for (int j = 1; j < i; j++)
+            {
+                if ((list->record)[0] <= (list->record)[j])
+                {
+                    for (int k = i; k > j; k--)
+                    {
+                        (list->record)[k] = (list->record)[k - 1];
+                    }
+                    (list->record)[j] = (list->record)[0];
+                    break;
+                }
+            }
+        }
+    }
+    else if (type == 1)
+    {
+        for (int i = 2; i <= list->length; i++)
+        {
+            (list->record)[0] = (list->record)[i];
+            for (int j = 1; j < i; j++)
+            {
+                if ((list->record)[0] >= (list->record)[j])
+                {
+                    for (int k = i; k > j; k--)
+                    {
+                        (list->record)[k] = (list->record)[k - 1];
+                    }
+                    (list->record)[j] = (list->record)[0];
+                    break;
+                }
+            }
+        }
+    }
+    else
+    {
+        printf("TYPE ERROR: Type can only be 0 or 1.\n");
+    }
+}
 ```
-根据 `type` 参数决定排序方式：
-- `type = 0`：升序排序
-- `type = 1`：降序排序
-
-排序过程：
-- 从第二个元素开始，依次将每个元素插入到已排序序列的适当位置。
-- 使用哨兵位简化插入操作。
+实现直接插入排序。根据`type`参数，决定是升序（`type=0`）还是降序（`type=1`）排序。排序过程中，使用了一个哨兵元素`record[0]`来简化插入操作。
 
 3. **打印顺序表**
 ```c
-void printList(SqList *sl)
+void PrintList(SeqList *list)
 {
-    for (int i = 1; i <= sl->length; i++)
+    for (int i = 1; i <= list->length; i++)
     {
-        printf("%d ", (sl->r)[i]);
+        printf("%d ", (list->record)[i]);
     }
     printf("\n");
 }
@@ -47,28 +85,28 @@ void printList(SqList *sl)
 
 4. **清空顺序表**
 ```c
-void clearList(SqList *sl)
+void ClearList(SeqList *list)
 {
-    sl->length = 0;
+    list->length = 0;
 }
 ```
-将顺序表的长度重置为 0，清空顺序表。
+将顺序表的长度设置为0，实现清空操作。
 
 ### 主函数
 ```c
 int main(void)
 {
-    SqList list;
+    SeqList list;
     int value;
-    initList(&list);
+    InitList(&list);
 
     while (1)
     {
         int n = 1;
-        printf("Enter the SqList (less than 100 integers separated by blank) : ");
+        printf("Enter the SeqList (less than 100 integers separated by blank) : ");
         while (scanf("%d", &value) == 1 && n < MAXSIZE)
         {
-            (list.r)[n++] = value;
+            (list.record)[n++] = value;
             list.length++;
             if (getchar() == '\n')
             {
@@ -79,23 +117,23 @@ int main(void)
         printf("Enter the type (ascend:0, descend:1) :");
         scanf("%d", &type);
 
-        straightInsertionSort(&list, type);
-        printList(&list);
-        clearList(&list);
+        StraightInsertionSort(&list, type);
+        PrintList(&list);
+        ClearList(&list);
     }
 
     return 0;
 }
 ```
-主函数实现了以下功能：
-1. 初始化顺序表。
-2. 循环读取用户输入的整数，直到输入的整数个数达到最大值 100 或用户按下回车键。
-3. 读取排序类型（升序或降序）。
-4. 调用 `straightInsertionSort` 函数进行排序。
-5. 调用 `printList` 函数打印排序后的顺序表。
-6. 调用 `clearList` 函数清空顺序表，以便进行下一次排序。
+主函数中，首先初始化顺序表。然后进入一个无限循环，每次循环中：
+1. 提示用户输入顺序表的元素，直到输入100个元素或遇到换行符。
+2. 提示用户输入排序类型（升序或降序）。
+3. 调用`StraightInsertionSort`函数进行排序。
+4. 调用`PrintList`函数打印排序后的顺序表。
+5. 调用`ClearList`函数清空顺序表，以便下一次输入。
 
 ### 注意事项
-1. 代码中使用了哨兵位简化了插入操作，但需要额外分配一个空间。
-2. 顺序表的最大长度为 100，用户输入的整数个数不能超过这个限制。
-3. 代码中没有对输入进行错误处理，例如输入非整数的情况。在实际应用中，应该添加相应的错误处理机制。
+1. 顺序表的最大长度为100，由`MAXSIZE`定义。
+2. 输入顺序表时，最多只能输入100个整数，且整数之间用空格分隔。
+3. 排序类型只能为0（升序）或1（降序），否则会提示类型错误。
+4. 程序运行后会不断循环，直到手动终止（如通过关闭程序窗口）。

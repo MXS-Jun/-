@@ -4,29 +4,29 @@
 
 typedef struct
 {
-    int r[MAXSIZE + 1];
+    int record[MAXSIZE + 1];
     int length;
-} SqList;
+} SeqList;
 
-void swap(SqList *sl, int i, int j);
-void initList(SqList *sl);
-void simpleSelectionSort(SqList *sl, int type);
-void printList(SqList *sl);
-void clearList(SqList *sl);
+void Swap(SeqList *list, int i, int j);
+void InitList(SeqList *list);
+void SimpleSelectionSort(SeqList *list, int type);
+void PrintList(SeqList *list);
+void ClearList(SeqList *list);
 
 int main(void)
 {
-    SqList list;
-    initList(&list);
+    SeqList list;
+    InitList(&list);
     int value;
 
     while (1)
     {
         int n = 1;
-        printf("Enter the SqList (less than 100 integers separated by blank) : ");
+        printf("Enter the SeqList (less than 100 integers separated by blank) : ");
         while (scanf("%d", &value) == 1 && n < MAXSIZE)
         {
-            (list.r)[n++] = value;
+            (list.record)[n++] = value;
             list.length++;
             if (getchar() == '\n')
             {
@@ -37,50 +37,50 @@ int main(void)
         printf("Enter the type (ascend:0, descend:1) :");
         scanf("%d", &type);
 
-        simpleSelectionSort(&list, type);
-        printList(&list);
-        clearList(&list);
+        SimpleSelectionSort(&list, type);
+        PrintList(&list);
+        ClearList(&list);
     }
 
     return 0;
 }
 
-void swap(SqList *sl, int i, int j)
+void Swap(SeqList *list, int i, int j)
 {
-    int tmp = (sl->r)[i];
-    (sl->r)[i] = (sl->r)[j];
-    (sl->r)[j] = tmp;
+    int tmp = (list->record)[i];
+    (list->record)[i] = (list->record)[j];
+    (list->record)[j] = tmp;
 }
 
-void initList(SqList *sl)
+void InitList(SeqList *list)
 {
-    sl->length = 0;
+    list->length = 0;
 }
 
-void simpleSelectionSort(SqList *sl, int type) // if type = 0 : ascend; if type = 1: descend;
+void SimpleSelectionSort(SeqList *list, int type) // if type = 0 : ascend; if type = 1: descend;
 {
     if (type == 0)
     {
-        for (int i = 1; i < sl->length; i++)
+        for (int i = 1; i < list->length; i++)
         {
-            for (int j = i + 1; j <= sl->length; j++)
+            for (int j = i + 1; j <= list->length; j++)
             {
-                if ((sl->r)[i] > (sl->r)[j])
+                if ((list->record)[i] > (list->record)[j])
                 {
-                    swap(sl, i, j);
+                    Swap(list, i, j);
                 }
             }
         }
     }
     else if (type == 1)
     {
-        for (int i = 1; i < sl->length; i++)
+        for (int i = 1; i < list->length; i++)
         {
-            for (int j = i + 1; j <= sl->length; j++)
+            for (int j = i + 1; j <= list->length; j++)
             {
-                if ((sl->r)[i] < (sl->r)[j])
+                if ((list->record)[i] < (list->record)[j])
                 {
-                    swap(sl, i, j);
+                    Swap(list, i, j);
                 }
             }
         }
@@ -91,16 +91,16 @@ void simpleSelectionSort(SqList *sl, int type) // if type = 0 : ascend; if type 
     }
 }
 
-void printList(SqList *sl)
+void PrintList(SeqList *list)
 {
-    for (int i = 1; i <= sl->length; i++)
+    for (int i = 1; i <= list->length; i++)
     {
-        printf("%d ", (sl->r)[i]);
+        printf("%d ", (list->record)[i]);
     }
     printf("\n");
 }
 
-void clearList(SqList *sl)
+void ClearList(SeqList *list)
 {
-    sl->length = 0;
+    list->length = 0;
 }

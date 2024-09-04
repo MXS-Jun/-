@@ -4,28 +4,28 @@
 
 typedef struct
 {
-    int r[MAXSIZE + 1];
+    int record[MAXSIZE + 1];
     int length;
-} SqList;
+} SeqList;
 
-void initList(SqList *sl);
-void straightInsertionSort(SqList *sl, int type);
-void printList(SqList *sl);
-void clearList(SqList *sl);
+void InitList(SeqList *list);
+void StraightInsertionSort(SeqList *list, int type);
+void PrintList(SeqList *list);
+void ClearList(SeqList *list);
 
 int main(void)
 {
-    SqList list;
+    SeqList list;
     int value;
-    initList(&list);
+    InitList(&list);
 
     while (1)
     {
         int n = 1;
-        printf("Enter the SqList (less than 100 integers separated by blank) : ");
+        printf("Enter the SeqList (less than 100 integers separated by blank) : ");
         while (scanf("%d", &value) == 1 && n < MAXSIZE)
         {
-            (list.r)[n++] = value;
+            (list.record)[n++] = value;
             list.length++;
             if (getchar() == '\n')
             {
@@ -36,35 +36,35 @@ int main(void)
         printf("Enter the type (ascend:0, descend:1) :");
         scanf("%d", &type);
 
-        straightInsertionSort(&list, type);
-        printList(&list);
-        clearList(&list);
+        StraightInsertionSort(&list, type);
+        PrintList(&list);
+        ClearList(&list);
     }
 
     return 0;
 }
 
-void initList(SqList *sl)
+void InitList(SeqList *list)
 {
-    sl->length = 0;
+    list->length = 0;
 }
 
-void straightInsertionSort(SqList *sl, int type) // if type = 0 : ascend; if type = 1: descend;
+void StraightInsertionSort(SeqList *list, int type) // if type = 0 : ascend; if type = 1: descend;
 {
     if (type == 0)
     {
-        for (int i = 2; i <= sl->length; i++)
+        for (int i = 2; i <= list->length; i++)
         {
-            (sl->r)[0] = (sl->r)[i];
+            (list->record)[0] = (list->record)[i];
             for (int j = 1; j < i; j++)
             {
-                if ((sl->r)[0] <= (sl->r)[j])
+                if ((list->record)[0] <= (list->record)[j])
                 {
                     for (int k = i; k > j; k--)
                     {
-                        (sl->r)[k] = (sl->r)[k - 1];
+                        (list->record)[k] = (list->record)[k - 1];
                     }
-                    (sl->r)[j] = (sl->r)[0];
+                    (list->record)[j] = (list->record)[0];
                     break;
                 }
             }
@@ -72,18 +72,18 @@ void straightInsertionSort(SqList *sl, int type) // if type = 0 : ascend; if typ
     }
     else if (type == 1)
     {
-        for (int i = 2; i <= sl->length; i++)
+        for (int i = 2; i <= list->length; i++)
         {
-            (sl->r)[0] = (sl->r)[i];
+            (list->record)[0] = (list->record)[i];
             for (int j = 1; j < i; j++)
             {
-                if ((sl->r)[0] >= (sl->r)[j])
+                if ((list->record)[0] >= (list->record)[j])
                 {
                     for (int k = i; k > j; k--)
                     {
-                        (sl->r)[k] = (sl->r)[k - 1];
+                        (list->record)[k] = (list->record)[k - 1];
                     }
-                    (sl->r)[j] = (sl->r)[0];
+                    (list->record)[j] = (list->record)[0];
                     break;
                 }
             }
@@ -95,16 +95,16 @@ void straightInsertionSort(SqList *sl, int type) // if type = 0 : ascend; if typ
     }
 }
 
-void printList(SqList *sl)
+void PrintList(SeqList *list)
 {
-    for (int i = 1; i <= sl->length; i++)
+    for (int i = 1; i <= list->length; i++)
     {
-        printf("%d ", (sl->r)[i]);
+        printf("%d ", (list->record)[i]);
     }
     printf("\n");
 }
 
-void clearList(SqList *sl)
+void ClearList(SeqList *list)
 {
-    sl->length = 0;
+    list->length = 0;
 }
