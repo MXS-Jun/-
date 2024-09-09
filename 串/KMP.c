@@ -3,14 +3,24 @@
 void GetLine(char *line);
 void PrintLine(char *line);
 unsigned int GetLength(char *line);
-int *GetNextArray(char *substring);
+void GetNextArray(char *substring, unsigned int substring_length, int nextarray[]);
+void PrintNextArray(int nextarray[], unsigned int substring_length);
 void KMP(char *line, char *substring);
 
 int main(void)
 {
     char *line;
+    char *substring;
 
     GetLine(line);
+    GetLine(substring);
+
+    unsigned int line_length = GetLength(line);
+    unsigned int substring_length = GetLength(substring);
+
+    int nextarray[substring_length];
+    GetNextArray(substring, substring_length, nextarray);
+    PrintNextArray(nextarray, substring_length);
 
     return 0;
 }
@@ -48,21 +58,50 @@ unsigned int GetLength(char *line)
     return i;
 }
 
-int *GetNextArray(char *substring)
+void GetNextArray(char *substring, unsigned int substring_length, int nextarray[])
 {
-    unsigned int substring_length = GetLength(substring);
-    int nextarray[substring_length];
-
-    nextarray[0] = -1;
-    for (unsigned int i = 1; i < substring_length; i++)
+    if (substring_length > 0)
     {
-        for(unsigned int j=0; j<i;j++)
+        nextarray[0] = -1;
+    }
+    if (substring_length > 1)
+    {
+        nextarray[1] = 1;
+    }
+    if (substring_length > 2)
+    {
+        for (unsigned int i = 2; i < substring_length; i++)
         {
-            for(int k=0;k<j;k++)
+            int val = 0;
+            for (unsigned int j = 0; j < i - 1; j++)
             {
-                
+                int tmp = 0;
+                for (int k = 0; k <= j; k++)
+                {
+                    if (substring[k] = substring[i - 1 - j + k])
+                    {
+                        tmp++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                if (tmp > val)
+                {
+                    val = tmp;
+                }
             }
+            nextarray[i] = val;
         }
+    }
+}
+
+void PrintNextArray(int nextarray[], unsigned int substring_length)
+{
+    for (unsigned int i = 0; i < substring_length; i++)
+    {
+        printf("%d", nextarray[i]);
     }
 }
 
