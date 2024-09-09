@@ -1,35 +1,45 @@
 #include <stdio.h>
 
-void GetLine(char *line);
-void PrintLine(char *line);
-unsigned int GetLength(char *line);
-void GetNextArray(char *substring, unsigned int substring_length, int nextarray[]);
+#define MAXSIZE 100
+
+void GetLine(char line[]);
+void PrintLine(char line[]);
+unsigned int GetLength(char line[]);
+void GetNextArray(char substring[], unsigned int substring_length, int nextarray[]);
 void PrintNextArray(int nextarray[], unsigned int substring_length);
-void KMP(char *line, char *substring);
+int KMP(char line[], char substring[]);
 
 int main(void)
 {
-    char *line;
-    char *substring;
+    char line[MAXSIZE];
+    char substring[MAXSIZE];
 
-    GetLine(line);
-    GetLine(substring);
+    while (1)
+    {
+        printf("Input the main-string: ");
+        GetLine(line);
+        printf("Input the sub-string: ");
+        GetLine(substring);
 
-    unsigned int line_length = GetLength(line);
-    unsigned int substring_length = GetLength(substring);
-
-    int nextarray[substring_length];
-    GetNextArray(substring, substring_length, nextarray);
-    PrintNextArray(nextarray, substring_length);
+        int start = KMP(line, substring);
+        if (start == -1)
+        {
+            printf("Not found.\n");
+        }
+        else
+        {
+            printf("The start of sub-string in main-string is %d.\n", start);
+        }
+    }
 
     return 0;
 }
 
-void GetLine(char *line)
+void GetLine(char line[])
 {
     char letter;
     unsigned int i = 0;
-    while ((letter = getchar()) && (letter != '\n'))
+    while ((letter = getchar()) && (letter != '\n') && i < MAXSIZE - 1)
     {
         line[i] = letter;
         i++;
@@ -37,7 +47,7 @@ void GetLine(char *line)
     line[i] = '\0';
 }
 
-void PrintLine(char *line)
+void PrintLine(char line[])
 {
     unsigned int i = 0;
     while (line[i] != '\0')
@@ -48,7 +58,7 @@ void PrintLine(char *line)
     printf("\n");
 }
 
-unsigned int GetLength(char *line)
+unsigned int GetLength(char line[])
 {
     unsigned int i = 0;
     while ((line[i]) != '\0')
@@ -58,7 +68,7 @@ unsigned int GetLength(char *line)
     return i;
 }
 
-void GetNextArray(char *substring, unsigned int substring_length, int nextarray[])
+void GetNextArray(char substring[], unsigned int substring_length, int nextarray[])
 {
     if (substring_length > 0)
     {
@@ -66,7 +76,7 @@ void GetNextArray(char *substring, unsigned int substring_length, int nextarray[
     }
     if (substring_length > 1)
     {
-        nextarray[1] = 1;
+        nextarray[1] = 0;
     }
     if (substring_length > 2)
     {
@@ -76,16 +86,22 @@ void GetNextArray(char *substring, unsigned int substring_length, int nextarray[
             for (unsigned int j = 0; j < i - 1; j++)
             {
                 int tmp = 0;
+                int flag = 0;
                 for (int k = 0; k <= j; k++)
                 {
-                    if (substring[k] = substring[i - 1 - j + k])
+                    if (substring[k] == substring[i - 1 - j + k])
                     {
                         tmp++;
                     }
                     else
                     {
+                        flag = 1;
                         break;
                     }
+                }
+                if (flag == 1)
+                {
+                    tmp = 0;
                 }
                 if (tmp > val)
                 {
@@ -105,8 +121,31 @@ void PrintNextArray(int nextarray[], unsigned int substring_length)
     }
 }
 
-void KMP(char *line, char *substring)
+int KMP(char line[], char substring[])
 {
     unsigned int line_length = GetLength(line);
     unsigned int substring_length = GetLength(substring);
+    int nextarray[substring_length];
+    GetNextArray(substring, substring_length, nextarray);
+
+    int start = -1;
+    unsigned int j = 0;
+    for (unsigned int i = 0; i < line_length; i++)
+    {
+        if (j == -1 || line[i] == substring[j])
+        {
+            j++;
+            if (j == substring_length)
+            {
+                start = i - j + 1;
+                break;
+            }
+        }
+        else
+        {
+            j = nextarray[j];
+        }
+    }
+
+    return start;
 }
