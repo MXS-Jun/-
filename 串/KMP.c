@@ -119,6 +119,7 @@ void PrintNextArray(int nextarray[], unsigned int substring_length)
     {
         printf("%d", nextarray[i]);
     }
+    printf("\n");
 }
 
 int KMP(char line[], char substring[])
@@ -128,24 +129,27 @@ int KMP(char line[], char substring[])
     int nextarray[substring_length];
     GetNextArray(substring, substring_length, nextarray);
 
-    int start = -1;
-    unsigned int j = 0;
-    for (unsigned int i = 0; i < line_length; i++)
+    int i = 0;
+    int j = 0;
+
+    while (i < line_length && j < substring_length)
     {
         if (j == -1 || line[i] == substring[j])
         {
+            i++;
             j++;
-            if (j == substring_length)
-            {
-                start = i - j + 1;
-                break;
-            }
         }
         else
         {
             j = nextarray[j];
         }
     }
-
-    return start;
+    if (j >= substring_length)
+    {
+        return i - substring_length;
+    }
+    else
+    {
+        return -1;
+    }
 }
